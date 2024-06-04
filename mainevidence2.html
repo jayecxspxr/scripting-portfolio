@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle Game</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="800" height="400"></canvas>
+  <div id="timer">Time: 0</div>
+  <button id="startButton">Start Game</button>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const circle = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 20,
+      speed: 5,
+      dx: 0
+    };
+
+    let squares = [];
+    let seconds = 0;
+    let timerElement = document.getElementById('timer');
+    let startButton = document.getElementById('startButton');
+    let gameStarted = false;
+    let squaresIntervalId;
+
+    // Create an Image object for the emoji
+    const emoji = new Image();
+    emoji.src = 'https://emojicdn.elk.sh/😊'; // URL of the smiling face emoji
+
+    function drawCircle() {
+      ctx.drawImage(emoji, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
+    }
+
+    function drawSquares() {
+      squares.forEach(square => {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(square.x, square.y, square.width, square.height);
+      });
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function updateTimer() {
+      seconds++;
+      timerElement.textContent = `Time: ${seconds}`;
+    }
+
+    function update() {
+      clearCanvas();
+
+      drawCircle();
+      drawSquares();
+
+      circle.x += circle.dx;
+
+      squares.forEach(square => {
+        square.y += square.speed;
+        if (checkCollision(circle, square)) {
+          gameOver();
+        }
+      });
+
+      squares = squares.filter(square => square.y < canvas.height);
+
+      updateTimer();
+
+      if (gameStarted) {
+        requestAnimationFrame(update);
+      }
+    }
+
+    function checkCollision(circle, square) {
+      const dx = circle.x - Math.max(square.x, Math.min(circle.x, square.x + square.width));
+      const dy = circle.y - Math.max(square.y, Math.min(circle.y, square.y + square.height));
+      return (dx * dx + dy * dy) < (circle.radius * circle.radius);
+    }
+
+    function gameOver() {
+      gameStarted = false;
+      clearInterval(squaresIntervalId);
+      alert(`Game Over! You survived for ${seconds} seconds.`);
+      document.location.reload();
+    }
+
+    startButton.addEventListener('click', function() {
+      gameStarted = true;
+      startButton.disabled = true;
+      update();
+      squaresIntervalId = setInterval(generateSquare, 1000); // Start generating squares
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (gameStarted) {
+        if (event.key === 'a') {
+          circle.dx = -circle.speed;
+        } else if (event.key === 'd') {
+          circle.dx = circle.speed;
+        }
+      }
+    });
+
+    document.addEventListener('keyup', function(event) {
+      if (gameStarted) {
+        if (event.key === 'a' || event.key === 'd') {
+          circle.dx = 0;
+        }
+      }
+    });
+
+    function generateSquare() {
+      const square = {
+        x: Math.random() * (canvas.width - 30),
+        y: 0,
+        width: 30,
+        height: 30,
+        speed: Math.random() * 3 + 1
+      };
+      squares.push(square);
+    }
+
+    setInterval(function() {
+      if (gameStarted && seconds % 30 === 0) {
+        clearInterval(squaresIntervalId); // Stop previous interval
+        squaresIntervalId = setInterval(generateSquare, 500); // Generate squares at a faster rate
+      }
+    }, 1000); // Check every second if it's been 30 seconds
+
+  </script>
+</body>
+</html>

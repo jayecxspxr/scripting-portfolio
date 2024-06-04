@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Process Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.5), rgba(250, 250, 210, 0.5), rgba(173, 216, 230, 0.5), rgba(152, 251, 152, 0.5));
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+        }
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .panel {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .panel a {
+            color: #007BFF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .panel a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Trello Link Panel -->
+        <div class="panel">
+            <h2>Project Management</h2>
+            <p>Track our progress on Trello: <a href="https://trello.com/b/978ENkCE/portfolio-for-scripting" target="_blank">Trello Board</a></p>
+        </div>
+
+        <!-- Advertising and Marketing Panel -->
+        <div class="panel">
+            <h2>Advertising and Marketing</h2>
+            <p>Explore strategies to enhance visibility and engage your audience effectively.</p>
+        </div>
+
+        <!-- Pseudo Links Panel -->
+        <div class="panel">
+            <h2>Resources</h2>
+            <p><a href="#">FAQ</a></p>
+            <p><a href="#">Linktree</a></p>
+            <p><a href="#">Future Patches</a></p>
+        </div>
+    </div>
+</body>
+</html>
